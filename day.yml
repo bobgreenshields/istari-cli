@@ -1,0 +1,83 @@
+- mob: A
+  area: 1
+  notes: "chatting"
+
+- mob: O
+  area: 1
+  notes: "chatting"
+
+- mob: B
+  area: "2"
+  notes: "Hiding on the ceiling"
+
+- mob: C
+  area: "2"
+  notes: "Still inside its egg"
+
+- mob: D
+  area: "2"
+  notes: Cocooned at C
+
+- mob: E
+  area: "4"
+  notes: "Chatting around fire, not alert"
+
+- mob: F
+  area: 14
+  notes: ""
+
+- mob: G
+  area: "7"
+  notes: "Bored guards for Vrox"
+
+- mob: H
+  area: "10"
+  notes: "Guarding captives"
+
+- mob: N
+  area: "10"
+  notes: "Guarding captives"
+
+- mob: I
+  area: "6"
+  notes: "Guarding boss cave and tortured dwarf"
+
+- mob: J
+  area: "8"
+  notes: ""
+
+- mob: K
+  area: "8"
+  notes: ""
+
+- mob: L
+  area: "8"
+  notes: ""
+
+- mob: P
+  area: "8"
+  notes: ""
+
+- mob: M
+  area: "16"
+  notes: "Hidden behind a statue"
+
+- mob: Klarg
+  area: "6"
+  notes: ""
+
+- mob: Draenog
+  area: "8"
+  notes: ""
+
+- mob: Vrox
+  area: 7
+  notes: ""
+
+- mob: Frik
+  area: 7
+  notes: "Vrox's assistant"
+
+- mob: Nela
+  area: 14
+  notes: "Nela Hillwater carrying a bucket"

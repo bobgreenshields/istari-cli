@@ -1,0 +1,105 @@
+klarg:
+  pp: 9
+  loot: "15sp and gems 15gp"
+  desc: Klarg, the chief, a hill goblin warrior
+
+vrox:
+  pp: 10
+  loot: "see page"
+  desc: The alchemist
+
+frik:
+  pp: 9
+  loot: "5sp and a bone with carvings on"
+  desc: "A smart, sneaky, backstabbing goblin"
+
+draenog:
+  pp: 9
+  loot: "15sp and gems 25gp"
+  desc: "Bugbear, 3 goblins, 1 archer"
+
+nela:
+  pp: 8
+  loot: "none"
+  desc: "prisoner water carrier"
+
+a:
+  pp: 9
+  loot: "Jewelry 2gp"
+  desc: 1 goblin
+
+o:
+  pp: 9
+  loot: "Jewelry 10gp"
+  desc: 2 goblins, 2 archers, 1 bomber
+
+b:
+  pp: 13
+  loot: none
+  desc: Giant spider
+
+c:
+  pp: 13
+  loot: none
+  desc: large spider
+
+d:
+  pp: 13
+  loot: none
+  desc: ghoul
+
+e:
+  pp: 9
+  loot: "11sp"
+  desc: 2 goblins, 2 goblin archers
+
+f:
+  pp: 9
+  loot: none
+  desc: 5 stirges
+
+g:
+  pp: 9
+  loot: 8sp
+  desc: 2 goblins
+
+h:
+  pp: 9
+  loot: 4sp
+  desc: 1 goblin
+
+n:
+  pp: 9
+  loot: 7sp
+  desc: 1 goblin, 1 bomber
+
+i:
+  pp: 9
+  loot: "4sp small animal skull stuffed with twigs"
+  desc: 1 goblins, 1 archer
+
+j:
+  pp: 9
+  loot: "9sp and gems 5gp"
+  desc: "boss honourguard - 2 goblins, 1 archer"
+
+k:
+  pp: 9
+  loot: "6sp and 3 bombs"
+  desc: 3 goblins, 1 archer, 1 bomber
+
+l:
+  pp: 9
+  loot: "2sp"
+  desc: 2 goblins
+
+p:
+  pp: 9
+  loot: "6sp and 2 bombs"
+  desc: 2 archers, 1 bomber
+
+m:
+  pp: 13
+  loot: none
+  desc: ghoul
+
