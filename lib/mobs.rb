@@ -38,6 +38,14 @@ class Mobs
 		self
 	end
 
+	def next_id
+		result = "a"
+		while has_id?(result)
+			result = result.next
+		end
+		result
+	end
+
 	private
 
 	def simple_push(mob)
