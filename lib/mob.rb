@@ -2,7 +2,10 @@ class Mob
 	attr_accessor :loot, :desc
 	attr_reader :pp, :id
 	def initialize(id)
-		@id = id
+		@id = id.downcase
+		@pp = ""
+		@loot = ""
+		@desc = ""
 	end
 
 	def pp=(value)

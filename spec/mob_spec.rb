@@ -2,6 +2,12 @@ require 'mob'
 
 describe Mob do
 	let(:mob_hash) { {"pp" => "9", "loot" => "15sp", "desc" => "a goblin"} }
+
+	describe '.new' do
+		it 'downcases the id' do
+			expect(Mob.new("B").id).to eql("b")
+		end
+	end
 	
 	describe ".from_hash" do
 		it 'returns a mob' do
