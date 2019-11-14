@@ -1,6 +1,22 @@
 require 'roster_item'
 
 describe RosterItem do
+	describe '.missing_keys' do
+		context 'when area and mob present' do
+			let(:item_hash) { {"area" => "3", "mob" => "Klarg"} }
+			it 'returns an empty array' do
+				expect(RosterItem.missing_keys(item_hash)).to match_array []
+			end
+		end
+
+		context 'when area and mob are missing' do
+			let(:item_hash) { { "notes" => "a goblin"} }
+			it 'returns an array with area and mob' do
+				expect(RosterItem.missing_keys(item_hash)).to contain_exactly("area", "mob")
+			end
+		end
+	end
+	
 	describe '#area' do
 		context 'when set as an integer' do
 			it 'returns a integer' do

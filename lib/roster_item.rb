@@ -4,6 +4,13 @@ end
 class RosterItem
 	attr_reader :area, :mob, :mob_id, :notes	
 
+	def self.missing_keys(item_hash)
+		%w(area mob).inject([]) do | missing, key |
+			missing << key unless item_hash.has_key?(key)
+			missing
+		end
+	end
+
 	def self.valid_area?(value)
 		return true if value.is_a? Integer
 		return false unless value.is_a? String
