@@ -49,16 +49,29 @@ describe Mobs do
 		end
 
 		context 'when mobs have been added' do
+			let(:mob1) { Mob.new("a") }
+			let(:mob2) { Mob.new("b") }
+			let(:mob3) { Mob.new("cat") }
+			let(:mob4) { Mob.new("owlbear") }
+			let(:mobs) { Mobs.new.push(mob1).push(mob2).push(mob3).push(mob4) }
+			it 'returns the next single character' do
+					expect(mobs.next_id).to eql("c")
+			end
+		end
+	end
+
+	describe '#each' do
 		let(:mob1) { Mob.new("a") }
 		let(:mob2) { Mob.new("b") }
 		let(:mob3) { Mob.new("cat") }
 		let(:mob4) { Mob.new("owlbear") }
 		let(:mobs) { Mobs.new.push(mob1).push(mob2).push(mob3).push(mob4) }
-		it 'returns the next single character' do
-				expect(mobs.next_id).to eql("c")
+		it 'yields the added mobs' do
+			mob_id_arr  = []
+			mobs.each { |mob| mob_id_arr << mob }
+			expect(mob_id_arr.map(&:id)).to contain_exactly("a", "b", "cat", "owlbear")
 		end
-			
-		end
+		
 	end
 	
 end

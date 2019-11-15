@@ -6,9 +6,6 @@ end
 class Mobs
 
 	def self.from_hash(mobs_hash)
-		# mobs = self.new
-		# mobs.load_from_hash(mobs_hash)
-		# mobs
 		self.new.tap do |mobs|
 			mobs.load_from_hash(mobs_hash)
 		end
@@ -37,6 +34,11 @@ class Mobs
 		simple_push(mob)
 		sort
 		self
+	end
+
+	def each
+		return enum_for(:each) unless block_given?
+		@mobs_array.each { |mob| yield(mob) }
 	end
 
 	def next_id
