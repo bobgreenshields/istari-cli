@@ -1,7 +1,7 @@
 class Mob
 	attr_reader :pp, :id, :loot, :desc
 	def initialize(id)
-		@id = id.downcase
+		@id = id.strip.downcase
 		@pp = ""
 		@loot = ""
 		@desc = ""
@@ -25,9 +25,9 @@ class Mob
 
 	def self.from_hash(id, values)
 		self.new(id).tap do |mob|
-			mob.pp = values["pp"]
-			mob.loot = values["loot"]
-			mob.desc = values["desc"]
+			mob.pp = values.fetch("pp", "")
+			mob.loot = values.fetch("loot", "")
+			mob.desc = values.fetch("desc", "")
 		end
 	end
 end
