@@ -6,9 +6,12 @@ end
 class Mobs
 
 	def self.from_hash(mobs_hash)
-		mobs = self.new
-		mobs.load_from_hash(mobs_hash)
-		mobs
+		# mobs = self.new
+		# mobs.load_from_hash(mobs_hash)
+		# mobs
+		self.new.tap do |mobs|
+			mobs.load_from_hash(mobs_hash)
+		end
 	end
 
 	def initialize
@@ -18,15 +21,13 @@ class Mobs
 
 	def load_from_hash(mobs_hash)
 		mobs_hash.each_pair do |key, value|
-			mob = Mob.from_hash(key, value)
-			simple_push(mob)
+			simple_push(Mob.from_hash(key, value))
 		end
 		sort
 	end
 
 	def has_id?(id)
-		id_to_test = id.downcase
-		@mobs_hash.has_key?(id_to_test)
+		@mobs_hash.has_key?(id.downcase)
 	end
 
 	def push(mob)
