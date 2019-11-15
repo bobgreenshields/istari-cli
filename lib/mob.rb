@@ -1,6 +1,5 @@
 class Mob
-	attr_accessor :loot, :desc
-	attr_reader :pp, :id
+	attr_reader :pp, :id, :loot, :desc
 	def initialize(id)
 		@id = id.downcase
 		@pp = ""
@@ -16,11 +15,19 @@ class Mob
 		@id <=> other.id
 	end
 
+	def loot=(value)
+		@loot = value.strip
+	end
+
+	def desc=(value)
+		@desc = value.strip
+	end
+
 	def self.from_hash(id, values)
-		mob = self.new(id)
-		mob.pp = values["pp"]
-		mob.loot = values["loot"]
-		mob.desc = values["desc"]
-		mob
+		self.new(id).tap do |mob|
+			mob.pp = values["pp"]
+			mob.loot = values["loot"]
+			mob.desc = values["desc"]
+		end
 	end
 end
