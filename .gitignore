@@ -1,2 +1,14 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+# vim swp files
 *.swp
-Gemfile.lock
+
+# rspec failure tracking
+.rspec_status
