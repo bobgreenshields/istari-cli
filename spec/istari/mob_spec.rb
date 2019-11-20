@@ -1,4 +1,7 @@
-require 'mob'
+# require 'istari'
+require_relative '../../lib/istari/mob'
+
+include Istari
 
 describe Mob do
 	let(:mob_hash) { {"pp" => "9", "loot" => "15sp", "desc" => "a goblin"} }

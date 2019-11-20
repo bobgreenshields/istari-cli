@@ -1,4 +1,7 @@
-require 'roster_item'
+# require 'roster_item'
+require_relative '../../lib/istari/roster_item'
+
+include Istari
 
 describe RosterItem do
 	describe '.missing_keys' do
