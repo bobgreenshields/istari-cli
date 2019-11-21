@@ -25,7 +25,7 @@ module Istari
 		end
 
 		def has_id?(id)
-			@mobs_hash.has_key?(id.downcase)
+			@mobs_hash.has_key?(id.strip.downcase)
 		end
 
 		def push(mob)
@@ -35,6 +35,10 @@ module Istari
 			simple_push(mob)
 			sort
 			self
+		end
+
+		def [](id)
+			@mobs_hash[id.strip.downcase]
 		end
 
 		def each

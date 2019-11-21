@@ -42,6 +42,24 @@ describe Mobs do
 		end
 	end
 
+	describe '#[]' do
+		let(:mob1) { Mob.new("a") }
+		let(:mob2) { Mob.new("b") }
+		let(:mob3) { Mob.new("owlbear") }
+		let(:mobs) { Mobs.new.push(mob1).push(mob2).push(mob3) }
+		context 'when a mob with that id exists' do
+			it 'returns a mob with the given id' do
+				expect(mobs["b"]).to be_a Mob
+				expect(mobs["b"].id).to eql("b")
+			end
+		end
+		context 'when there is no mob with that id' do
+			it 'returns nil' do
+				expect(mobs["c"]).to be_nil
+			end
+		end
+	end
+
 	describe '#next_id' do
 		context 'when no mobs have been added' do
 			let(:mobs) { Mobs.new }
