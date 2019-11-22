@@ -16,6 +16,11 @@ module Istari
 			@areas_hash.has_key?(number)
 		end
 
+		def each
+			return enum_for(:each) unless block_given?
+			@areas_array.each { |area| yield(area) }
+		end
+
 		def push(area)
 			if has_number?(area.number)
 				raise AreasError, "An area with the number of #{area.number} already exists"
