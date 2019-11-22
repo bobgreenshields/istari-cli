@@ -5,6 +5,7 @@ module Istari
 	module Cli
 		class Mobs < Thor
 			option :id
+			option :single, aliases: '-s', type: :boolean, desc: "Do not ask for multiple mobs"
 			
 			desc "add", "add a new mob"
 			def add
@@ -23,6 +24,11 @@ module Istari
 				mob.pp = pp if pp.length > 0
 				mobs.push(mob)
 				list
+				return if options[:single]
+				again = ask("Add another mob [y/N]?").strip.downcase
+				return unless again == "y"
+				options.delete(:id)
+				add
 			end
 
 			desc "list", "list all current mobs"
