@@ -12,6 +12,7 @@ module Istari
 	register(:mobs_loader) { MobsYamlLoader.new(self.mobs_file) }
 	register(:table_width) { 120 }
 	register(:mobs_table) { MobsTable.new(self[:table_width]) }
+	register(:backup_dir_name) { ".backups" }
 
 	class << self
 		def istari_root
@@ -43,6 +44,12 @@ module Istari
 
 		def mob_create(id)
 			Mob.new(id)
+		end
+
+		def backup_dir
+			dir = istari_root + self[:backup_dir_name]
+			dir.mkdir unless dir.exist?
+			dir
 		end
 		
 	end
