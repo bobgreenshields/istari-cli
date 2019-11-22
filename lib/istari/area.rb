@@ -8,6 +8,10 @@ module Istari
 			@leads_to = []
 		end
 
+		def <=>(other)
+			@number <=> other.number
+		end
+
 		def title=(value)
 			@title = value.strip
 		end
