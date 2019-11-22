@@ -23,5 +23,20 @@ describe Areas do
 		end
 	end
 
+	describe '#has_number?' do
+		context 'when no areas with that number are present' do
+			it 'returns false' do
+				areas = Areas.new.push(area_1).push(area_2)
+				expect(areas.has_number?(3)).to be_falsey
+			end
+			context 'when an area with that number is present' do
+				it 'returns true' do
+					areas = Areas.new.push(area_1).push(area_2).push(area_3)
+					expect(areas.has_number?(3)).to be_truthy
+				end
+			end
+		end
+	end
+
 	
 end
