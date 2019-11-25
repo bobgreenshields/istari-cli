@@ -15,6 +15,7 @@ module Istari
 		def initialize
 			@mobs_array = []
 			@mobs_hash = {}
+			@dirty = false
 		end
 
 		def load_from_hash(mobs_hash)
@@ -33,12 +34,17 @@ module Istari
 				raise MobsError, "A mob with the id of #{mob.id} already exists"
 			end
 			simple_push(mob)
+			@dirty = true
 			sort
 			self
 		end
 
 		def [](id)
 			@mobs_hash[id.strip.downcase]
+		end
+
+		def save(saver)
+			saver.call(self) if @dirty
 		end
 
 		def each

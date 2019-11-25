@@ -1,11 +1,15 @@
 require_relative 'istari/mob'
 require_relative 'istari/mobs'
 require_relative 'istari/mobs_yaml_loader'
+require_relative 'istari/mobs_yaml'
 require_relative 'istari/mobs_table'
 require_relative 'istari/areas_yaml_loader'
 require_relative 'istari/areas_table'
 require_relative 'istari/roster_yaml_loader'
 require_relative 'istari/roster_table'
+require_relative 'istari/file_writer'
+require_relative 'istari/backup_time'
+
 require 'pathname'
 require 'dry/container'
 
@@ -15,10 +19,16 @@ module Istari
 	register(:search_root) { Pathname.pwd }
 	register(:table_width) { 120 }
 	register(:backup_dir_name) { ".backups" }
+	register(:backup) { BackupTime.new(self[:backup_dir_name]) }
+	register(:writer) { FileWriter.new(self[:backup]) }
+
 	register(:mobs_loader) { MobsYamlLoader.new(self.mobs_file) }
 	register(:mobs_table) { MobsTable.new(self[:table_width]) }
+	register(:mobs_saver) { MobsYaml }
+
 	register(:areas_loader) { AreasYamlLoader.new(self.areas_dir) }
 	register(:areas_table) { AreasTable.new(self[:table_width]) }
+
 	register(:roster_loader) { RosterYamlLoader.new(self.roster_file) }
 	register(:roster_table) { RosterTable.new(self[:table_width]) }
 
@@ -52,6 +62,11 @@ module Istari
 
 		def mobs_get
 			self[:mobs_loader].call
+		end
+
+		def mobs_save(mobs)
+			saver = self[:mobs_saver].new(mobs_file: mobs_file, writer: self[:writer])
+			mobs.save(saver)
 		end
 
 		def mobs_table
