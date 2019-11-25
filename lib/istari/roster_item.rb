@@ -42,5 +42,9 @@ module Istari
 			@notes = value.strip
 		end
 
+		def <=>(other)
+			@mob_id <=> other.mob_id
+		end
+
 	end
 end
