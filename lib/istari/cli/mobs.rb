@@ -24,11 +24,16 @@ module Istari
 				mob.pp = pp if pp.length > 0
 				mobs.push(mob)
 				list
-				return if options[:single]
+				if options[:single]
+					Istari.mobs_save(mobs)
+					return
+				end
 				again = ask("Add another mob [y/N]?").strip.downcase
-				return unless again == "y"
-				options.delete(:id)
-				add
+				if again == "y"
+					options.delete(:id)
+					add
+				end
+				Istari.mobs_save(mobs)
 			end
 
 			desc "list", "list all current mobs"
