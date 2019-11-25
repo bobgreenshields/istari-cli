@@ -1,6 +1,7 @@
 require 'thor'
 require_relative './cli/mobs'
 require_relative './cli/areas'
+require_relative './cli/roster'
 
 module Istari
 	module Cli
@@ -10,6 +11,9 @@ module Istari
 
 			desc "areas SUBCOMMAND ...ARGS", "create and manage the encounter's areas"	
 			subcommand "areas", Istari::Cli::Areas
+
+			desc "roster SUBCOMMAND ...ARGS", "create and manage the encounter's roster"	
+			subcommand "roster", Istari::Cli::Roster
 		end
 	end
 	
