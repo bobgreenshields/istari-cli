@@ -38,12 +38,12 @@ module Istari
 			@leads_to.each { |area| yield(area) }
 		end
 
-		def self.from_hash(values)
-			self.new(values["number"]).tap do |area|
-				area.title = values.fetch("title", "")
-				area.description = values.fetch("description", "")
-				area.player_images = values.fetch("player_images", [])
-				area.leads_to = values.fetch("leads_to", [])
+		def self.from_hash(area_hash)
+			self.new(area_hash["number"]).tap do |area|
+				area.title = area_hash.fetch("title", "")
+				area.description = area_hash.fetch("description", "")
+				area.player_images = area_hash.fetch("player_images", [])
+				area.leads_to = area_hash.fetch("leads_to", [])
 			end
 		end
 		
