@@ -1,2 +1,5 @@
 *.swp
+spec/fixture/backups/
+spec/fixture/.backups/
+spec/fixture/run.rb
 Gemfile.lock
