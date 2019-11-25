@@ -16,13 +16,13 @@ module Istari
 			unless @dir_path.exist?
 				raise	AreasYamlLoaderError, "Trying to load some areas but #{@dir_path} does not exist"
 			end
-			areas = Areas.new
+			areas_array = []
 			@dir_path.each_child do |child|
 				if child.extname == ".md"
-					areas.push(Area.from_hash(YAML.load(child.read)))
+					areas_array.push(YAML.load(child.read))
 				end
 			end
-			areas
+			Areas.from_array(areas_array)
 		end
 	end
 	
