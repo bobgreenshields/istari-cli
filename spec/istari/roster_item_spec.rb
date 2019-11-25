@@ -20,60 +20,54 @@ describe RosterItem do
 		end
 	end
 	
-	describe '#area' do
-		context 'when set as an integer' do
-			it 'returns a integer' do
-				item = RosterItem.new
-				item.area = 2
+	# describe '#area' do
+	describe '.new' do
+		context 'when area set as an integer' do
+			it 'returns an area with the correct number' do
+				item = RosterItem.new("a", 2)
 				expect(item.area).to eql(2)
 			end
 		end
 
-		context 'when given an invalid string' do
+		context 'when given an invalid area of string' do
 			it 'raises an error' do
-				item = RosterItem.new
-				expect { item.area = "this" }.to raise_error(RosterItemError)
+				expect { RosterItem.new("a", "this") }.to raise_error(RosterItemError)
 			end
 		end
 
-		context 'when given a string of integer with whitespace' do
+		context 'when given an area string of integer with whitespace' do
 			it 'ignores the whitespace' do
-				item = RosterItem.new
-				item.area = " 24  "
+				item = RosterItem.new("a", "   24  ")
 				expect(item.area).to eql(24)
 			end
 		end
 
-		context 'when given a string integer with a plus' do
+		context 'when given an area string integer with a plus' do
 			it 'returns a positive integer' do
-				item = RosterItem.new
-				item.area = " +24  "
+				item = RosterItem.new("a", "   +24  ")
 				expect(item.area).to eql(24)
 			end
 		end
 
-		context 'when given a string integer with a minus sign' do
+		context 'when given an area string integer with a minus sign' do
 			it 'returns a negative integer' do
-				item = RosterItem.new
-				item.area = " -24  "
+				item = RosterItem.new("a", "   -24  ")
 				expect(item.area).to eql(-24)
 			end
 		end
-	end
+	# end
 
-	describe '#mob' do
+	# describe '#mob' do
 		context 'when mob has leading and trailing whitespace' do
 			it 'trims whitespace' do
-				item = RosterItem.new
-				item.mob = "   Klarg  "
+				item = RosterItem.new("   Klarg  ", 2)
 				expect(item.mob).to eql("Klarg")
 			end
 		end	
 
 		context 'when mob has a capital letters' do
 			it 'mob_id is all lower case' do
-				item = RosterItem.new
-				item.mob = "   KlaRg  "
+				item = RosterItem.new("   KlaRg  ", 2)
 				expect(item.mob_id).to eql("klarg")
 			end
 		end

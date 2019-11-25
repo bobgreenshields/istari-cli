@@ -24,27 +24,18 @@ module Istari
 					raise RosterItemError, "RosterItem build hash missing a key of #{key}"
 				end
 			end
-			item = self.new
-			item.area = item_hash["area"]
-			item.mob = item_hash["mob"]
+			item = self.new(item_hash["mob"], item_hash["area"] )
 			item.notes = item_hash.fetch("notes", "")
 			item
 		end
 
-		def initialize
-			@area = 0
-		end
-
-		def area=(value)
-			unless self.class.valid_area?(value)
-				raise RosterItemError, "Area must be an integer or string integer not: #{value}"
-			end
-			@area = value.to_i
-		end
-
-		def mob=(value)
-			@mob = value.strip
+		def initialize(mob, area)
+			@mob = mob.strip
 			@mob_id = @mob.downcase
+			unless self.class.valid_area?(area)
+				raise RosterItemError, "Area must be an integer or string integer not: #{area}"
+			end
+			@area = area.to_i
 		end
 
 		def notes=(value)
@@ -52,5 +43,4 @@ module Istari
 		end
 
 	end
-	
 end
