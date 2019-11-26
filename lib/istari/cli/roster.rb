@@ -6,10 +6,13 @@ module Istari
 		class Roster < Thor
 			option :mob
 			option :area
-			option :single, aliases: '-s', type: :boolean, desc: "Do not ask for multiple mobs"
+			option :single, aliases: '-s', type: :boolean, desc: "Do not ask for multiple roster items"
 			
-			# desc "add", "add a new mob"
-			# def add
+			desc "add", "place a mob in an area on the roster"
+			def add
+				prompt_for_mob
+
+
 			# 	id = options[:id] || prompt_for_id
 			# 	id = confirm_id(id)
 			# 	puts set_color("Using id: #{id}\n", :green)
@@ -30,7 +33,7 @@ module Istari
 			# 	return unless again == "y"
 			# 	options.delete(:id)
 			# 	add
-			# end
+			end
 
 			desc "list", "list all current mobs"
 			def list
@@ -39,15 +42,23 @@ module Istari
 
 			private
 
-			# def prompt_for_id
-			# 	puts "The next available generic id is: #{mobs.next_id}"
-			# 	puts "To use generic id press return"
-			# 	puts ""
-			# 	id = ask("Enter id (. to exit) id?").strip.downcase
-			# 	exit if id == "."
-			# 	return mobs.next_id if id == ""
-			# 	confirm_id(id)
-			# end
+			def prompt_for_mob
+				say "Choose a mob to place (. to exit)"
+				response = ask "list / enter", limited_to: ['list', 'l', 'enter', 'e', '.']
+				if response.downcase[0] == 'l'
+					list_mobs
+				end
+				mob = ask("Enter the mob id").strip
+				mob_id = mob.downcase
+				say "Using mob: #{mob}", :green
+
+				# puts "To use generic id press return"
+				# puts ""
+				# id = ask("Enter id (. to exit) id?").strip.downcase
+				# exit if id == "."
+				# return mobs.next_id if id == ""
+				# confirm_id(id)
+			end
 
 			# def confirm_id(id)
 			# 	id = id.strip.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9\-]/i, '')
@@ -56,12 +67,24 @@ module Istari
 			# 	prompt_for_id
 			# end
 			
+			def list_mobs
+				puts Istari.mobs_table.call(mobs)
+			end
+			
 			def roster
 				@roster || refresh_roster
 			end
 
 			def refresh_roster
 				@roster = Istari.roster_get
+			end
+			
+			def mobs
+				@mobs || refresh_mobs
+			end
+
+			def refresh_mobs
+				@mobs = Istari.mobs_get
 			end
 		end
 		
