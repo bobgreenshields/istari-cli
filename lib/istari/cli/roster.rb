@@ -1,5 +1,6 @@
 require 'thor'
 require_relative '../../istari'
+require_relative 'mobs'
 
 module Istari
 	module Cli
@@ -10,7 +11,8 @@ module Istari
 			
 			desc "add", "place a mob in an area on the roster"
 			def add
-				prompt_for_mob
+				mob = prompt_for_mob
+				area = prompt_for_area
 
 
 			# 	id = options[:id] || prompt_for_id
@@ -35,7 +37,7 @@ module Istari
 			# 	add
 			end
 
-			desc "list", "list all current mobs"
+			desc "list", "list all current roster placements"
 			def list
 				puts Istari.roster_table.call(roster)
 			end
@@ -44,21 +46,49 @@ module Istari
 
 			def prompt_for_mob
 				say "Choose a mob to place (. to exit)"
-				response = ask "list / enter", limited_to: ['list', 'l', 'enter', 'e', '.']
+				response = ask "list / enter / add", limited_to: ['l', 'e', 'a', '.']
 				if response.downcase[0] == 'l'
 					list_mobs
 				end
-				mob = ask("Enter the mob id").strip
-				mob_id = mob.downcase
+				exit if response == "."
+				if response.downcase[0] == 'a'
+					mob = add_mob
+				else
+					mob = ask("Enter the mob id: ").strip
+				end
+				exit if mob == "."
+				if roster.unplaced_mobs(mobs).select { |unpl_mob| unpl_mob.id == mob.downcase }.empty?
+				# unless mobs.has_id?(mob.downcase)
+					say "could not find a mob with the id of: #{mob.downcase}, try again", :red
+					prompt_for_mob
+				end
 				say "Using mob: #{mob}", :green
-
-				# puts "To use generic id press return"
-				# puts ""
-				# id = ask("Enter id (. to exit) id?").strip.downcase
-				# exit if id == "."
-				# return mobs.next_id if id == ""
-				# confirm_id(id)
+				mob
 			end
+
+			def prompt_for_area
+				say "Choose an area for the mob (. to exit)"
+				# response = ask "list / enter / add", limited_to: ['l', 'e', 'a', '.']
+				response = ask "list / enter ", limited_to: ['l', 'e', '.']
+				if response.downcase[0] == 'l'
+					list_areas
+				end
+				exit if response == "."
+				# if response.downcase[0] == 'a'
+				# 	mob = add_mob
+				# else
+					 area = ask("Enter the area number: ").strip
+				# end
+				exit if area == "."
+				say "Using area: #{area}", :green
+				unless areas.has_number?(area.to_i)
+					say "could not find a area with a number of: #{area}, try again", :red
+					prompt_for_area
+				end
+				area
+			end
+
+			
 
 			# def confirm_id(id)
 			# 	id = id.strip.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9\-]/i, '')
@@ -67,8 +97,22 @@ module Istari
 			# 	prompt_for_id
 			# end
 			
+			def add_mob
+				mobs_cli = Istari::Cli::Mobs.new
+				mobs_cli.options = { single: true }
+				mob_id = mobs_cli.add
+				refresh_mobs
+				list_mobs
+				mob_id
+			end
+			
 			def list_mobs
-				puts Istari.mobs_table.call(mobs)
+				# puts Istari.mobs_table.call(mobs)
+				puts Istari.mobs_table.call(roster.unplaced_mobs(mobs))
+			end
+			
+			def list_areas
+				puts Istari.areas_table.call(areas)
 			end
 			
 			def roster
@@ -85,6 +129,14 @@ module Istari
 
 			def refresh_mobs
 				@mobs = Istari.mobs_get
+			end
+			
+			def areas
+				@areas || refresh_areas
+			end
+
+			def refresh_areas
+				@areas = Istari.areas_get
 			end
 		end
 		
