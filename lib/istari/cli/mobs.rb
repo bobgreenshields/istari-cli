@@ -26,7 +26,7 @@ module Istari
 				list
 				if options[:single]
 					Istari.mobs_save(mobs)
-					return
+					return id
 				end
 				again = ask("Add another mob [y/N]?").strip.downcase
 				if again == "y"
@@ -34,6 +34,7 @@ module Istari
 					add
 				end
 				Istari.mobs_save(mobs)
+				id
 			end
 
 			desc "list", "list all current mobs"
