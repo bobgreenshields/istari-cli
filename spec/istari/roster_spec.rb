@@ -1,5 +1,7 @@
 require_relative '../../lib/istari/roster_item'
 require_relative '../../lib/istari/roster'
+require_relative '../../lib/istari/mob'
+require_relative '../../lib/istari/mobs'
 
 include Istari
 
@@ -15,6 +17,19 @@ describe Roster do
 	describe '.new' do
 		it 'returns an empty Roster' do
 			expect(Roster.new.count).to eql 0
+		end
+	end
+
+	describe '#unplaced_mobs' do
+		let(:mob_1) { Mob.new("a") }
+		let(:mob_2) { Mob.new("b") }
+		let(:mob_3) { Mob.new("c") }
+		let(:mob_4) { Mob.new("d") }
+		let(:mobs) { Mobs.new.push(mob_1).push(mob_2).push(mob_3).push(mob_4) }
+		it 'only yields mobs not in the roster' do
+			roster = Roster.from_array(items_array)
+			unplaced_ids = roster.unplaced_mobs(mobs).map(&:id)
+			expect(unplaced_ids).to contain_exactly("c", "d")
 		end
 	end
 

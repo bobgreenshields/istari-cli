@@ -31,6 +31,11 @@ module Istari
 			@items_array.each { |item| yield(item) }
 		end
 
+		def unplaced_mobs(mobs)
+			return enum_for(:unplaced_mobs, mobs) unless block_given?
+			mobs.each { |mob| yield mob unless has_mob?(mob.id) }
+		end
+
 		def load_from_array(items_array)
 			items_array.each do |item_hash|
 				item = RosterItem.from_hash(item_hash)
