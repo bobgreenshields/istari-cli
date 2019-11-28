@@ -143,7 +143,7 @@ module Istari
 			
 			def add_mob(id)
 				mobs_cli = Istari::Cli::Mobs.new
-				mobs_cli.options = { id: id, single: true }
+				mobs_cli.options = { id: id, single: true, nolist: true }
 				mob_id = mobs_cli.add
 				refresh_mobs
 				# list_mobs
