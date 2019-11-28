@@ -23,29 +23,13 @@ module Istari
 				area.description = desc
 				area.leads_to = leads_to
 				areas.push(area)
-				list
+				# list
 				Istari.areas_save(areas)
+				yn = ask("Add a mob to this area? [y/N]").strip.downcase
+				if yn == "y"
+					add_mob(area.number)
+				end
 			end
-			# 	id = options[:id] || prompt_for_id
-			# 	id = confirm_id(id)
-			# 	puts set_color("Using id: #{id}\n", :green)
-			# 	desc = ask("Enter a description:").strip.gsub('"', "'")
-			# 	puts set_color("Using desc: #{desc}\n", :green)
-			# 	loot = ask("Enter loot:").strip.gsub('"', "'")
-			# 	puts set_color("Using loot: #{loot}\n", :green)
-			# 	pp = ask("Enter passive perception:").strip.gsub(/[^0-9]/, '')
-			# 	puts set_color("Using passive perception: #{pp}\n", :green)
-			# 	mob = Istari::Mob.new(id)
-			# 	mob.desc = desc if desc.length > 0
-			# 	mob.loot = loot if loot.length > 0
-			# 	mob.pp = pp if pp.length > 0
-			# 	mobs.push(mob)
-			# 	list
-			# 	return if options[:single]
-			# 	again = ask("Add another mob [y/N]?").strip.downcase
-			# 	return unless again == "y"
-			# 	options.delete(:id)
-			# 	add
 
 			desc "list", "list all areas"
 			def list
@@ -54,29 +38,18 @@ module Istari
 
 			private
 
-			# def prompt_for_id
-			# 	puts "The next available generic id is: #{mobs.next_id}"
-			# 	puts "To use generic id press return"
-			# 	puts ""
-			# 	id = ask("Enter id (. to exit) id?").strip.downcase
-			# 	exit if id == "."
-			# 	return mobs.next_id if id == ""
-			# 	confirm_id(id)
-			# end
-
-			# def confirm_id(id)
-			# 	id = id.strip.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9\-]/i, '')
-			# 	return id unless mobs.has_id?(id)
-			# 	puts set_color("This id: #{id} is already in use please enter a different one", :red)
-			# 	prompt_for_id
-			# end
-			
 			def areas
 				@areas || refresh_areas
 			end
 
 			def refresh_areas
 				@areas = Istari.areas_get
+			end
+
+			def add_mob(area_number)
+				roster_cli = Istari::Cli::Roster.new
+				roster_cli.options = { area: area_number, single: true }
+				roster_cli.add
 			end
 		end
 		
