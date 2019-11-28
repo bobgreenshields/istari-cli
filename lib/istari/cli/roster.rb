@@ -10,8 +10,10 @@ module Istari
 			
 			desc "add", "place a mob in an area on the roster"
 			def add
+				puts "Options array is"
+				puts options.inspect
 				mob = prompt_for_mob
-				if options.has_key?("area")
+				if options.has_key?(:area)
 					area = area_from_options
 				else
 					area = prompt_for_area
@@ -21,7 +23,7 @@ module Istari
 				roster_item.notes = ask("Add any notes: ")
 				roster.push(roster_item)
 				if options[:single]
-					# Istari.roster_save(roster)
+					Istari.roster_save(roster)
 					return
 				end
 				again = ask("Add another mob [y/N]?").strip.downcase
@@ -29,7 +31,7 @@ module Istari
 					options.delete("area")
 					add
 				end
-				# Istari.roster_save(roster)
+				Istari.roster_save(roster)
 			end
 
 			desc "list", "list all current roster placements"
@@ -49,8 +51,8 @@ module Istari
 			private
 
 			def area_from_options
-				return options["area"].to_i if valid_area?(options["area"])
-				say("Roster add command was passed an invalid area option of: #{options["area"]}", :red)
+				return options[:area].to_i if valid_area?(options[:area])
+				say("Roster add command was passed an invalid area option of: #{options[:area]}", :red)
 				exit
 			end
 
