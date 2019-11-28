@@ -7,8 +7,25 @@ module Istari
 			option :number, aliases: '-n'
 			option :single, aliases: '-s', type: :boolean, desc: "Do not ask for multiple mobs"
 			
-			# desc "add", "add a new mob"
-			# def add
+			desc "add", "add a new area"
+			def add
+				title = ask("Enter the title of the area: ")
+				desc = ask("Enter a description of the area: ")
+				leads_to = []
+				adjoining = 1
+				while adjoining != ""
+					adjoining = ask("Enter the number of an adjoining area (return for none): ").strip
+					leads_to << adjoining.to_i if /[+-]?\d+/.match(adjoining)
+					puts leads_to.inspect
+				end
+				area = Istari::Area.new(areas.next_number)
+				area.title = title
+				area.description = desc
+				area.leads_to = leads_to
+				areas.push(area)
+				list
+				Istari.areas_save(areas)
+			end
 			# 	id = options[:id] || prompt_for_id
 			# 	id = confirm_id(id)
 			# 	puts set_color("Using id: #{id}\n", :green)
@@ -29,9 +46,8 @@ module Istari
 			# 	return unless again == "y"
 			# 	options.delete(:id)
 			# 	add
-			# end
 
-			desc "list", "list all current mobs"
+			desc "list", "list all areas"
 			def list
 				puts Istari.areas_table.call(areas)
 			end
