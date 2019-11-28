@@ -6,6 +6,7 @@ module Istari
 		class Mobs < Thor
 			option :id
 			option :single, aliases: '-s', type: :boolean, desc: "Do not ask for multiple mobs"
+			option :nolist, aliases: '-n', type: :boolean, desc: "After adding, suppress listing of mobs"
 			
 			desc "add", "add a new mob"
 			def add
@@ -23,7 +24,7 @@ module Istari
 				mob.loot = loot if loot.length > 0
 				mob.pp = pp if pp.length > 0
 				mobs.push(mob)
-				list
+				list unless options[:nolist]
 				if options[:single]
 					Istari.mobs_save(mobs)
 					return id
