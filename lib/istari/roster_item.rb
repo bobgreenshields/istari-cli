@@ -39,7 +39,7 @@ module Istari
 		end
 
 		def notes=(value)
-			@notes = value.strip
+			@notes = value.strip.gsub('"',"'")
 		end
 
 		def <=>(other)
