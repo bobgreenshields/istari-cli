@@ -26,6 +26,10 @@ module Istari
 			@areas_hash.has_key?(number.to_i)
 		end
 
+		def [](number)
+			@areas_hash[number.to_i]
+		end
+
 		def each
 			return enum_for(:each) unless block_given?
 			@areas_array.each { |area| yield(area) }
