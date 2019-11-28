@@ -10,9 +10,7 @@ module Istari
 			
 			desc "add", "place a mob in an area on the roster"
 			def add
-				# puts options.keys.inspect
 				mob = prompt_for_mob
-				# puts "area is #{options["area"]}"
 				if options.has_key?("area")
 					area = area_from_options
 				else
@@ -21,7 +19,6 @@ module Istari
 				say("Placing mob: #{mob} (#{mobs[mob].desc}) in area: #{area} #{areas[area].title}", :green)
 				roster_item = Istari::RosterItem.new(mob, area)
 				roster_item.notes = ask("Add any notes: ")
-				# puts roster_item.inspect
 				roster.push(roster_item)
 				if options[:single]
 					# Istari.roster_save(roster)
@@ -97,10 +94,6 @@ module Istari
 			def prompt_for_area
 				list_areas
 				area = ask "Choose an area for the mob (. to exit)".strip
-				# say "Choose an area for the mob (. to exit)"
-				# response = ask "list / enter / add", limited_to: ['l', 'e', 'a', '.']
-				# response = ask "Enter ", limited_to: ['l', 'e', '.']
-				# response = response.length == 0 ? 'e' : response
 				case area
 				when /\./
 					exit
@@ -116,42 +109,17 @@ module Istari
 					say("Invalid input.  Try again", :red)
 					prompt_for_area
 				end
-
-				# when "e"
-				# 	area = ask("Enter the area number: ").strip.downcase
-				# 	if valid_area?(area)
-				# 		area.to_i
-				# 		say("Placing mob: #{@mob} in area: #{area}", :green)
-				# 		area
-				# 	else
-				# 		say("Could not find an area with a number of: #{area} try again", :red)
-				# 		prompt_for_area
-				# 	end
-				# when "."
-				# 	exit
-				# end
 			end
-
-			
-
-			# def confirm_id(id)
-			# 	id = id.strip.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9\-]/i, '')
-			# 	return id unless mobs.has_id?(id)
-			# 	puts set_color("This id: #{id} is already in use please enter a different one", :red)
-			# 	prompt_for_id
-			# end
 			
 			def add_mob(id)
 				mobs_cli = Istari::Cli::Mobs.new
 				mobs_cli.options = { id: id, single: true, nolist: true }
 				mob_id = mobs_cli.add
 				refresh_mobs
-				# list_mobs
 				mob_id
 			end
 			
 			def list_mobs
-				# puts Istari.mobs_table.call(mobs)
 				puts Istari.mobs_table.call(roster.unplaced_mobs(mobs))
 			end
 			
