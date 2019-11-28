@@ -5,36 +5,34 @@ require_relative 'mobs'
 module Istari
 	module Cli
 		class Roster < Thor
-			option :mob
 			option :area
 			option :single, aliases: '-s', type: :boolean, desc: "Do not ask for multiple roster items"
 			
 			desc "add", "place a mob in an area on the roster"
 			def add
+				# puts options.keys.inspect
 				mob = prompt_for_mob
-				area = prompt_for_area
-
-
-			# 	id = options[:id] || prompt_for_id
-			# 	id = confirm_id(id)
-			# 	puts set_color("Using id: #{id}\n", :green)
-			# 	desc = ask("Enter a description:").strip.gsub('"', "'")
-			# 	puts set_color("Using desc: #{desc}\n", :green)
-			# 	loot = ask("Enter loot:").strip.gsub('"', "'")
-			# 	puts set_color("Using loot: #{loot}\n", :green)
-			# 	pp = ask("Enter passive perception:").strip.gsub(/[^0-9]/, '')
-			# 	puts set_color("Using passive perception: #{pp}\n", :green)
-			# 	mob = Istari::Mob.new(id)
-			# 	mob.desc = desc if desc.length > 0
-			# 	mob.loot = loot if loot.length > 0
-			# 	mob.pp = pp if pp.length > 0
-			# 	mobs.push(mob)
-			# 	list
-			# 	return if options[:single]
-			# 	again = ask("Add another mob [y/N]?").strip.downcase
-			# 	return unless again == "y"
-			# 	options.delete(:id)
-			# 	add
+				# puts "area is #{options["area"]}"
+				if options.has_key?("area")
+					area = area_from_options
+				else
+					area = prompt_for_area
+				end
+				say("Placing mob: #{mob} (#{mobs[mob].desc}) in area: #{area} #{areas[area].title}", :green)
+				roster_item = Istari::RosterItem.new(mob, area)
+				roster_item.notes = ask("Add any notes: ")
+				# puts roster_item.inspect
+				roster.push(roster_item)
+				if options[:single]
+					# Istari.roster_save(roster)
+					return
+				end
+				again = ask("Add another mob [y/N]?").strip.downcase
+				if again == "y"
+					options.delete("area")
+					add
+				end
+				# Istari.roster_save(roster)
 			end
 
 			desc "list", "list all current roster placements"
@@ -42,50 +40,96 @@ module Istari
 				puts Istari.roster_table.call(roster)
 			end
 
+			desc "byarea", "list roster items by area"
+			def byarea
+				sorted_roster = roster.each.sort do |a,b|
+					result = a.area <=> b.area
+					result == 0 ? a.mob_id <=> b.mob_id : result
+				end
+				puts Istari.roster_sorted_table.call(roster: sorted_roster, mobs: mobs, areas: areas)
+			end
+
 			private
 
+			def area_from_options
+				return options["area"].to_i if valid_area?(options["area"])
+				say("Roster add command was passed an invalid area option of: #{options["area"]}", :red)
+				exit
+			end
+
+			def valid_unplaced_mob?(mob_str)
+				mobs.has_id?(mob_str) && (! roster.has_mob?(mob_str))
+			end
+
 			def prompt_for_mob
-				say "Choose a mob to place (. to exit)"
-				response = ask "list / enter / add", limited_to: ['l', 'e', 'a', '.']
-				if response.downcase[0] == 'l'
-					list_mobs
-				end
-				exit if response == "."
-				if response.downcase[0] == 'a'
-					mob = add_mob
+				say "The mobs available for placing are"
+				list_mobs
+				say("The next available generic id for a mob is #{mobs.next_id}")
+				id = ask("Choose a mob or add a new one (. to exit)").strip
+				case id
+				when "."
+					exit
+				when ->(id){ mobs.has_id?(id) }
+					if roster.has_mob?(id)
+						say("Mob: #{id} has already been placed.  Try again", :red)
+						prompt_for_mob
+					else
+						say "Using mob: #{id}", :green
+						id
+					end
 				else
-					mob = ask("Enter the mob id: ").strip
+					yn = ask("No mob with the id of: #{id} exists, would you like to make it [y/N]?").strip.downcase
+					if yn == "y"
+						id = add_mob(id)
+						say "Using mob: #{id}", :green
+						id
+					else
+						prompt_for_mob
+					end
 				end
-				exit if mob == "."
-				if roster.unplaced_mobs(mobs).select { |unpl_mob| unpl_mob.id == mob.downcase }.empty?
-				# unless mobs.has_id?(mob.downcase)
-					say "could not find a mob with the id of: #{mob.downcase}, try again", :red
-					prompt_for_mob
-				end
-				say "Using mob: #{mob}", :green
-				mob
+			end
+
+			def valid_area?(area_str)
+				return false unless Istari::Area.area_number_good?(area_str)
+				areas.each.any? { |area| area.number == area_str.to_i }
 			end
 
 			def prompt_for_area
-				say "Choose an area for the mob (. to exit)"
+				list_areas
+				area = ask "Choose an area for the mob (. to exit)".strip
+				# say "Choose an area for the mob (. to exit)"
 				# response = ask "list / enter / add", limited_to: ['l', 'e', 'a', '.']
-				response = ask "list / enter ", limited_to: ['l', 'e', '.']
-				if response.downcase[0] == 'l'
-					list_areas
-				end
-				exit if response == "."
-				# if response.downcase[0] == 'a'
-				# 	mob = add_mob
-				# else
-					 area = ask("Enter the area number: ").strip
-				# end
-				exit if area == "."
-				say "Using area: #{area}", :green
-				unless areas.has_number?(area.to_i)
-					say "could not find a area with a number of: #{area}, try again", :red
+				# response = ask "Enter ", limited_to: ['l', 'e', '.']
+				# response = response.length == 0 ? 'e' : response
+				case area
+				when /\./
+					exit
+				when /[+-]?\d+/
+					if valid_area?(area)
+						area.to_i
+						area
+					else
+						say("Could not find an area with a number of: #{area} try again", :red)
+						prompt_for_area
+					end
+				else
+					say("Invalid input.  Try again", :red)
 					prompt_for_area
 				end
-				area
+
+				# when "e"
+				# 	area = ask("Enter the area number: ").strip.downcase
+				# 	if valid_area?(area)
+				# 		area.to_i
+				# 		say("Placing mob: #{@mob} in area: #{area}", :green)
+				# 		area
+				# 	else
+				# 		say("Could not find an area with a number of: #{area} try again", :red)
+				# 		prompt_for_area
+				# 	end
+				# when "."
+				# 	exit
+				# end
 			end
 
 			
@@ -97,12 +141,12 @@ module Istari
 			# 	prompt_for_id
 			# end
 			
-			def add_mob
+			def add_mob(id)
 				mobs_cli = Istari::Cli::Mobs.new
-				mobs_cli.options = { single: true }
+				mobs_cli.options = { id: id, single: true }
 				mob_id = mobs_cli.add
 				refresh_mobs
-				list_mobs
+				# list_mobs
 				mob_id
 			end
 			
