@@ -7,6 +7,7 @@ require_relative 'istari/areas_yaml_loader'
 require_relative 'istari/areas_table'
 require_relative 'istari/roster_yaml_loader'
 require_relative 'istari/roster_table'
+require_relative 'istari/roster_sorted_table'
 require_relative 'istari/file_writer'
 require_relative 'istari/backup_time'
 
@@ -31,6 +32,7 @@ module Istari
 
 	register(:roster_loader) { RosterYamlLoader.new(self.roster_file) }
 	register(:roster_table) { RosterTable.new(self[:table_width]) }
+	register(:roster_sorted_table) { RosterSortedTable.new(self[:table_width]) }
 
 	class << self
 		def istari_root
@@ -87,6 +89,10 @@ module Istari
 
 		def roster_table
 			self[:roster_table]
+		end
+
+		def roster_sorted_table
+			self[:roster_sorted_table]
 		end
 
 		def mob_create(id)
