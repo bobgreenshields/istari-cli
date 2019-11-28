@@ -4,7 +4,7 @@ require 'erb'
 
 module Istari
 	class AreaYaml
-		attr_reader :areas
+		attr_reader :area
 
 		def initialize(areas_dir:, writer:)
 			@areas_dir = areas_dir
@@ -15,15 +15,15 @@ module Istari
 			<<-TEMPLATE
 ---
 layout: area
-title: "<%= @area.title %>"
-number: <%= @area.number.to_s %>
+title: "<%= area.title %>"
+number: <%= area.number.to_s %>
 
-description: "<%= @area.description %>"
+description: "<%= area.description %>"
 categories: area
 player_images:
 leads_to:
-<% @area.leads_to do |adjoin| %>
-	- <%= adjoin.to_s %>
+<% area.leads_to do |adjoin| %>
+  - <%= adjoin.to_s %>
 
 <% end %>
 ---
