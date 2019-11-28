@@ -13,11 +13,11 @@ module Istari
 		end
 
 		def title=(value)
-			@title = value.strip
+			@title = value.strip.gsub('"',"'")
 		end
 
 		def description=(value)
-			@description = value.strip
+			@description = value.strip.gsub('"',"'")
 		end
 
 		def player_images=(value)
@@ -45,6 +45,12 @@ module Istari
 				area.player_images = area_hash.fetch("player_images", [])
 				area.leads_to = area_hash.fetch("leads_to", [])
 			end
+		end
+
+		def self.area_number_good?(area_number)
+			return true if area_number.is_a? Integer
+			return false unless area_number.is_a? String
+			/^[+-]?\d+$/.match(area_number.strip) ? true : false
 		end
 		
 	end
