@@ -35,6 +35,14 @@ module Istari
 			@areas_array.each { |area| yield(area) }
 		end
 
+		def next_number
+			result = 1
+			while has_number?(result)
+				result = result.next
+			end
+			result
+		end
+
 		def load_from_array(areas_array)
 			areas_array.each do |area_hash|
 				area = Area.from_hash(area_hash)
