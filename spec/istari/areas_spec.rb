@@ -48,6 +48,16 @@ describe Areas do
 		end
 	end
 
+	describe "#[]" do
+		it 'returns the area with that number' do
+			areas = Areas.from_array(areas_array)
+			areas.push(area_3)
+			expect(areas[3]).to be_a Istari::Area
+			expect(areas[3].number).to eql(3)
+			expect(areas[2].number).to eql(2)
+		end
+	end
+
 	describe '#has_number?' do
 		context 'when no areas with that number are present' do
 			it 'returns false' do
