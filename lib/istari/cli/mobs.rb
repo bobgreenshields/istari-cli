@@ -24,6 +24,8 @@ module Istari
 				mob.loot = loot if loot.length > 0
 				mob.pp = pp if pp.length > 0
 				mobs.push(mob)
+				yn = ask("Create an info page for this mob? [y/N]? ").strip.downcase
+				Istari.create_mob_page(mob) if yn == "y"
 				list unless options[:nolist]
 				if options[:single]
 					Istari.mobs_save(mobs)
