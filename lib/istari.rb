@@ -4,6 +4,7 @@ require_relative 'istari/mobs_yaml_loader'
 require_relative 'istari/mobs_yaml'
 require_relative 'istari/mobs_table'
 require_relative 'istari/areas_yaml_loader'
+require_relative 'istari/area_yaml'
 require_relative 'istari/areas_table'
 require_relative 'istari/roster_yaml_loader'
 require_relative 'istari/roster_table'
@@ -29,6 +30,7 @@ module Istari
 
 	register(:areas_loader) { AreasYamlLoader.new(self.areas_dir) }
 	register(:areas_table) { AreasTable.new(self[:table_width]) }
+	register(:areas_saver) { AreaYaml }
 
 	register(:roster_loader) { RosterYamlLoader.new(self.roster_file) }
 	register(:roster_table) { RosterTable.new(self[:table_width]) }
@@ -77,6 +79,11 @@ module Istari
 
 		def areas_get
 			self[:areas_loader].call
+		end
+
+		def areas_save(areas)
+			saver = self[:areas_saver].new(areas_dir: areas_dir, writer: self[:writer])
+			areas.save(saver)
 		end
 
 		def areas_table
