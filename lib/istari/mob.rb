@@ -9,19 +9,19 @@ module Istari
 		end
 
 		def pp=(value)
-			@pp = value.to_i.to_s
+			@pp = value.to_i.to_s.gsub('"',"'")
 		end
 
 		def <=>(other)
-			@id <=> other.id
+			@id <=> other.id.gsub('"',"'")
 		end
 
 		def loot=(value)
-			@loot = value.strip
+			@loot = value.strip.gsub('"',"'")
 		end
 
 		def desc=(value)
-			@desc = value.strip
+			@desc = value.strip.gsub('"',"'")
 		end
 
 		def self.from_hash(id, values)
