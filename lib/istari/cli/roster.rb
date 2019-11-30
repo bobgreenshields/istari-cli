@@ -10,8 +10,8 @@ module Istari
 			
 			desc "add", "place a mob in an area on the roster"
 			def add
-				puts "Options array is"
-				puts options.inspect
+				# puts "Options array is"
+				# puts options.inspect
 				mob = prompt_for_mob
 				if options.has_key?(:area)
 					area = area_from_options
@@ -61,10 +61,11 @@ module Istari
 			end
 
 			def prompt_for_mob
-				say "The mobs available for placing are"
 				list_mobs
 				say("The next available generic id for a mob is #{mobs.next_id}")
+				say("Just press return to create a new mob with this id")
 				id = ask("Choose a mob or add a new one (. to exit)").strip
+				id = id == '' ? mobs.next_id : id
 				case id
 				when "."
 					exit
@@ -122,7 +123,12 @@ module Istari
 			end
 			
 			def list_mobs
-				puts Istari.mobs_table.call(roster.unplaced_mobs(mobs))
+				if roster.unplaced_mobs(mobs).count == 0
+					say "There are no unplaced mobs available for placing"
+				else
+					say "The mobs available for placing are"
+					puts Istari.mobs_table.call(roster.unplaced_mobs(mobs))
+				end
 			end
 			
 			def list_areas
