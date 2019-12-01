@@ -64,6 +64,15 @@ module Istari
 			istari_root + "_mobs"
 		end
 
+		def rules_dir
+			istari_root + "_rules"
+		end
+
+		def rc
+			rc_file = istari_root + ".istarirc"
+			YAML.load(rc_file.read) || {}
+		end
+
 		def areas_dir
 			istari_root + "_areas"
 		end
