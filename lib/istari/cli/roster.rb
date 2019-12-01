@@ -20,7 +20,7 @@ module Istari
 				end
 				say("Placing mob: #{mob} (#{mobs[mob].desc}) in area: #{area} #{areas[area].title}", :green)
 				roster_item = Istari::RosterItem.new(mob, area)
-				roster_item.notes = ask("Add any notes: ")
+				roster_item.notes = ask("Add any notes for this mob: ")
 				roster.push(roster_item)
 				if options[:single]
 					Istari.roster_save(roster)
@@ -62,13 +62,15 @@ module Istari
 
 			def prompt_for_mob
 				list_mobs
-				say("The next available generic id for a mob is #{mobs.next_id}")
-				say("Just press return to create a new mob with this id")
+				# say("The next available generic id for a mob is #{mobs.next_id}")
+				say("Just press enter to use next generic mob id of #{mobs.next_id}")
 				id = ask("Choose a mob or add a new one (. to exit)").strip
-				id = id == '' ? mobs.next_id : id
+				# id = id == '' ? mobs.next_id : id
 				case id
 				when "."
 					exit
+				when ""
+					id = add_mob(mobs.next_id)
 				when ->(id){ mobs.has_id?(id) }
 					if roster.has_mob?(id)
 						say("Mob: #{id} has already been placed.  Try again", :red)
