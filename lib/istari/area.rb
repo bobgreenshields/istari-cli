@@ -23,8 +23,17 @@ module Istari
 			@description = value.strip.gsub('"',"'")
 		end
 
+		def item_count
+			@items.length
+		end
+
+		def items?
+			item_count != 0
+		end
+
 		def add_item(title:, description:)
-			@items.push(Item.new(title, description))
+			description = description.nil? ? "" : description
+			@items.push(Item.new(title.strip, description.strip))
 		end
 
 		def player_images=(value)
