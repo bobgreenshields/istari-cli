@@ -1,0 +1,51 @@
+- title: "Spider spawn"
+  desc: |-
+    At the start of each round after the timer goes off roll a d6 for each egg cache, on a 4-6 the cache spawns a large spider that takes an action at the end of this turn's initiative order.
+
+- title: "Destroy eggs"
+  desc: |-
+    Each egg cache can be detroyed by weapons (AC 8 HP 12) or magic.  If weapons are used the process will spawn a large spider each round as the eggs are burst, magic possibly not depending on the spell used.
+
+- title: "A, B, C, D: Spider eggs"
+  desc: |-
+    A small pile of web covered orbs nestled in the alcove near the entrance at A.  The webs firmly fix them into place.
+
+    * **DC 18 Wis (Perception) check** to spot another nest of eggs at B.
+    * **DC 15 Int (Investigation) check** the orbs are vibrating and undulating slightly, there's something in there and it might be trying to get out.
+    * **DC 20 Int (Investigation) check** after a couple of rounds they are moving more than before.  The closer the proximity of bodies the more they vibrate.
+
+- title: "E: Cocooned bodies"
+  desc: |-
+    Not visible from the entrance but there are 3 web cocoons suspended from the web at E.
+
+    **DC 15 Int (Investigation) check** they contain 2 man sized and 1 smaller than man sized humanoids
+
+    They can be opened using a sharp edge.
+
+    * Smaller - is a dessicated goblin.  Describe the dessicated skin and shrivelled flesh. See Loot.
+    * 1st man sized - is a dessicated human.  Flesh like the goblin but the clothes are falling apart as the corpse is moved.
+    * 2nd man sized - describe the first patch of dessicated dried skin just as with the other two.  This cocoon contains an initially inanimate ghoul.  It suddenly opens its eyes and viciously attacks. See Loot.
+
+    #### Loot
+
+    On the goblin corpse:
+
+    16 sp
+    2 gems 24 gp
+    Potion: Cure light wounds
+
+    On the human corpse:
+
+    25 sp
+    3 gp
+    Potion of fire breathing.
+    Masterworks grappling hook. Light and strong, gives advantage to climb rolls.  Dwarven steel and elven rope.
+
+- title: "Ghoul"
+  desc: |-
+    * Wizened and dry, the skin of the ghoul looks older than either of the other two corpses.
+    * Around its neck is a pendant on a chain.  A truncated triangle made of silver.  When worn it produces light up to a 20 foot radius when the wearer wishes.  The wearer can choose to dim the light.  Zalac knows its location at all times.  It unlocks the mausoleum door.
+    **DC 15 Int (Investigation) check** the features of the ghoul are not human.  It was an elf.
+
+- title: "F: Blocked off opening"
+  desc: The passage slopes down to a hole near the floor.  It is blocked by a wooden lattice that has been jammed in place **DC 15 Str check 10 Effort**.
