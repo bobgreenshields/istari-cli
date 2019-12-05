@@ -5,6 +5,7 @@ require_relative '../istari'
 require_relative './cli/mobs'
 require_relative './cli/areas'
 require_relative './cli/roster'
+require_relative './cli/items'
 
 module Istari
 	module Cli
@@ -17,6 +18,9 @@ module Istari
 
 			desc "roster SUBCOMMAND ...ARGS", "create and manage the encounter's roster"	
 			subcommand "roster", Istari::Cli::Roster
+
+			desc "items SUBCOMMAND ...ARGS", "create and list items of interest for areas"	
+			subcommand "items", Istari::Cli::Items
 
 			desc "init", "initialise a new project"
 			def init

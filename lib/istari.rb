@@ -7,6 +7,8 @@ require_relative 'istari/mobs_table'
 require_relative 'istari/areas_yaml_loader'
 require_relative 'istari/area_yaml'
 require_relative 'istari/areas_table'
+require_relative 'istari/items_table'
+require_relative 'istari/items_yaml'
 require_relative 'istari/roster_yaml_loader'
 require_relative 'istari/roster_yaml'
 require_relative 'istari/roster_table'
@@ -31,9 +33,13 @@ module Istari
 	register(:mobs_saver) { MobsYaml }
 	register(:mob_page_saver) { MobPageYaml }
 
-	register(:areas_loader) { AreasYamlLoader.new(self.areas_dir) }
+	register(:areas_loader) { AreasYamlLoader.new(area_dir: self.areas_dir,
+																						area_items_dir: self.area_items_dir) }
 	register(:areas_table) { AreasTable.new(self[:table_width]) }
 	register(:areas_saver) { AreaYaml }
+	
+	register(:items_table) { ItemsTable.new(self[:table_width]) }
+	register(:items_saver) { ItemsYaml }
 
 	register(:roster_loader) { RosterYamlLoader.new(self.roster_file) }
 	register(:roster_table) { RosterTable.new(self[:table_width]) }
@@ -77,6 +83,10 @@ module Istari
 			istari_root + "_areas"
 		end
 
+		def area_items_dir
+			istari_root + "_data" + "area_items"
+		end
+
 		def roster_file
 			istari_root + "_data" + "01-default.yml"
 		end
@@ -103,6 +113,11 @@ module Istari
 			self[:areas_loader].call
 		end
 
+		def items_save(area)
+			saver = self[:items_saver].new(items_dir: area_items_dir, writer: self[:writer])
+			area.save(saver)
+		end
+
 		def areas_save(areas)
 			saver = self[:areas_saver].new(areas_dir: areas_dir, writer: self[:writer])
 			areas.save(saver)
@@ -110,6 +125,10 @@ module Istari
 
 		def areas_table
 			self[:areas_table]
+		end
+
+		def items_table
+			self[:items_table]
 		end
 
 		def roster_get

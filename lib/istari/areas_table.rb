@@ -13,6 +13,7 @@ module Istari
 				t.add_column("Title", &:title)
 				t.add_column("Description") { |area| trim_desc(area.description) }
 				t.add_column("Leads to") { |area| area.leads_to.map(&:to_s).join(',') }
+				t.add_column("Items") { |area| area.item_count.to_s }
 			end.pack(max_table_width: @table_width).to_s
 		end
 

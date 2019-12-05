@@ -59,6 +59,10 @@ module Istari
 			@leads_to.each { |area| yield(area) }
 		end
 
+		def save(saver)
+			saver.call(self)
+		end
+
 		def self.from_hash(area_hash)
 			self.new(area_hash["number"]).tap do |area|
 				area.title = area_hash.fetch("title", "")
@@ -68,7 +72,7 @@ module Istari
 				hash_items = area_hash.fetch("items", [])
 				hash_items.each do |hash_item|
 					area.add_item(title: hash_item["title"],
-												description: hash_item["description"])
+												description: hash_item["desc"])
 				end
 			end
 		end
