@@ -19,10 +19,28 @@ module Istari
 			areas_array = []
 			@dir_path.each_child do |child|
 				if child.extname == ".md"
+					area_hash = YAML.load(child.read)
+					area_number = area_hash["number"].to_i
+					if items.key?(area_number)
+						area_hash["items"] = items[area_number]
+					end
 					areas_array.push(YAML.load(child.read))
 				end
 			end
 			Areas.from_array(areas_array)
+		end
+
+		def items
+			@items ||= load_items(items_dir_path)
+		end
+
+		def load_items(items_dir_path)
+			@items ||= {}
+			file_match = /(?<area_no>\d+)\.yml/
+			@dir_path.each_child do |child|
+				next unless matches = file_match.match(child.basename)
+				@items[matches[:area_no].to_i] = YAML.load(child.read)
+			end
 		end
 	end
 	
