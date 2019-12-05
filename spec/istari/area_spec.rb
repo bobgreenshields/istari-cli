@@ -5,7 +5,9 @@ include Istari
 describe Area do
 	let(:area_hash) { { "number" => "1", "title" => "Entrance",
 		"description" => "Dungeon entrance",
-		"player_images" => [ "goblin", "bugbear" ], "leads_to" => [ "2", "3" ] } }
+		"player_images" => [ "goblin", "bugbear" ], "leads_to" => [ "2", "3" ],
+		"items" => [ "title" => "A: Chest"
+	} }
 	describe '.new' do
 		it 'returns an area object with the correct number' do
 			expect(Area.new(15)).to be_a Istari::Area

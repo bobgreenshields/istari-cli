@@ -1,11 +1,14 @@
 module Istari
 	class Area
+		Item = Struct.new(:title, :description)
+
 		attr_reader :number, :title, :description
 
 		def initialize(number)
 			@number = number.to_i
 			@player_images = []
 			@leads_to = []
+			@items = []
 		end
 
 		def <=>(other)
@@ -18,6 +21,10 @@ module Istari
 
 		def description=(value)
 			@description = value.strip.gsub('"',"'")
+		end
+
+		def add_item(title:, description:)
+			@items.push(Item.new(title, description))
 		end
 
 		def player_images=(value)
@@ -33,6 +40,11 @@ module Istari
 			@player_images.each { |image| yield(image) }
 		end
 
+		def items
+			return enum_for(:items) unless block_given?
+			@items.each { |item| yield(item) }
+		end
+
 		def leads_to
 			return enum_for(:leads_to) unless block_given?
 			@leads_to.each { |area| yield(area) }
@@ -44,6 +56,11 @@ module Istari
 				area.description = area_hash.fetch("description", "")
 				area.player_images = area_hash.fetch("player_images", [])
 				area.leads_to = area_hash.fetch("leads_to", [])
+				hash_items = area_hash.fetch("items", [])
+				hash_items.each do |hash_item|
+					area.add_item(title: hash_item["title"],
+												description: hash_item["description"])
+				end
 			end
 		end
 
