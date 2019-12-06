@@ -1,81 +1,73 @@
-require_relative 'area'
+require_relative 'rule'
 
 module Istari
-	class AreasError < StandardError
+	class RulesError < StandardError
 	end
 
-	class Areas
+	class Rules
 
-		def self.from_array(areas_array)
-			self.new.tap do |areas|
-				areas.load_from_array(areas_array)
+		def self.from_array(rules_array)
+			self.new.tap do |rules|
+				rules.load_from_array(rules_array)
 			end
 		end
 		
 		def initialize
-			@areas_array = []
-			@areas_hash = {}
-			@new_areas = []
+			@rules_array = []
+			@rules_hash = {}
+			@new_rules = []
 		end
 
 		def count
-			@areas_array.length
+			@rules_array.length
 		end
 
-		def has_number?(number)
-			@areas_hash.has_key?(number.to_i)
+		def has_title?(title)
+			@rules_hash.has_key?(title)
 		end
 
-		def [](number)
-			@areas_hash[number.to_i]
+		def [](title)
+			@rules_hash[title]
 		end
 
 		def each
 			return enum_for(:each) unless block_given?
-			@areas_array.each { |area| yield(area) }
+			@rules_array.each { |rule| yield(rule) }
 		end
 
-		def next_number
-			result = 1
-			while has_number?(result)
-				result = result.next
-			end
-			result
-		end
-
-		def load_from_array(areas_array)
-			areas_array.each do |area_hash|
-				area = Area.from_hash(area_hash)
-				simple_push(area)
+		def load_from_array(rules_array)
+			rules_array.each do |rule_hash|
+				rule = Rule.from_hash(rule_hash)
+				simple_push(rule)
 			end
 			sort
 			self
 		end
 
-		def push(area)
-			if has_number?(area.number)
-				raise AreasError, "An area with the number of #{area.number} already exists"
+		def push(rule)
+			if has_title?(rule.title)
+				raise RulesError, "An rule with the title of #{rule.title} already exists"
 			end
-			simple_push(area)
-			@new_areas.push(area)
+			simple_push(rule)
+			@new_rules.push(rule)
 			sort
 			self
 		end
 
 		def save(saver)
-			@new_areas.each { |area| saver.call(area) }
+			@new_rules.each { |rule| saver.call(rule) }
 		end
 
 		private
 
-		def simple_push(area)
-			@areas_array.push(area)
-			@areas_hash[area.number] = area
+		def simple_push(rule)
+			@rules_array.push(rule)
+			@rules_hash[rule.title] = rule
 			self
 		end
 
 		def sort
-			@areas_array = @areas_array.sort
+			@rules_array = @rules_array.sort
 		end
 		
 	end
