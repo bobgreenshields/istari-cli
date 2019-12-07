@@ -15,7 +15,10 @@ module Istari
 			unless @file_path.exist?
 				raise	MobsYamlLoaderError, "Trying to load some mobs but #{@file_path} does not exist"
 			end
-			Mobs.from_hash(YAML.load(@file_path.read))
+			# mobs_hash = YAML.load(@file_path.read) || {}
+			# Mobs.from_hash(mobs_hash)
+			# Mobs.from_hash(YAML.load(@file_path.read))
+			Mobs.from_hash(YAML.load(@file_path.read) || {})
 		end
 	end
 	
