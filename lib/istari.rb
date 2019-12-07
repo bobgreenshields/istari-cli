@@ -44,6 +44,10 @@ module Istari
 	register(:items_table) { ItemsTable.new(self[:table_width]) }
 	register(:items_saver) { ItemsYaml }
 
+	register(:rules_loader) { RulesYamlLoader.new(self.rules_dir) }
+	register(:rules_table) { RulesTable.new(self[:table_width]) }
+	register(:rules_saver) { RuleYaml }
+
 	register(:roster_loader) { RosterYamlLoader.new(self.roster_file) }
 	register(:roster_table) { RosterTable.new(self[:table_width]) }
 	register(:roster_saver) { RosterYaml }
@@ -132,6 +136,19 @@ module Istari
 
 		def items_table
 			self[:items_table]
+		end
+
+		def rules_get
+			self[:rules_loader].call
+		end
+
+		def rules_save(rules)
+			saver = self[:rules_saver].new(rules_dir: rules_dir, writer: self[:writer])
+			rules.save(saver)
+		end
+
+		def rules_table
+			self[:rules_table]
 		end
 
 		def roster_get

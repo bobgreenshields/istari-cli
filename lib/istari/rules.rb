@@ -23,11 +23,13 @@ module Istari
 		end
 
 		def has_title?(title)
-			@rules_hash.has_key?(title)
+			@rules_hash.has_key?(title.downcase)
 		end
 
+		alias title? has_title?
+
 		def [](title)
-			@rules_hash[title]
+			@rules_hash[title.downcase]
 		end
 
 		def each
@@ -62,7 +64,7 @@ module Istari
 
 		def simple_push(rule)
 			@rules_array.push(rule)
-			@rules_hash[rule.title] = rule
+			@rules_hash[rule.title.downcase] = rule
 			self
 		end
 

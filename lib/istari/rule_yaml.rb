@@ -2,7 +2,7 @@ require 'erb'
 
 
 module Istari
-	class AreaYaml
+	class RuleYaml
 		attr_reader :rule
 
 		def initialize(rules_dir:, writer:)

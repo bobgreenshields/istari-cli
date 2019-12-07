@@ -8,8 +8,8 @@ module Istari
 	end
 
 	class RulesYamlLoader
-		def initialize(rule_dir:)
-			@dir_path = Pathname.new(rule_dir)
+		def initialize(rules_dir)
+			@dir_path = Pathname.new(rules_dir)
 		end
 
 		def call
@@ -22,5 +22,6 @@ module Istari
 			end
 			Rules.from_array(rules_array)
 		end
+	end
 	
 end
