@@ -27,7 +27,7 @@ module Istari
 		def self.from_hash(rule_hash)
 			self.new(rule_hash["title"]).tap do |rule|
 				rule.summary = rule_hash.fetch("summary", "")
-				rule.title_link = rule_hash.fetch("title-link", "")
+				rule.title_link = rule_hash.fetch("title_link", "")
 			end
 		end
 	end

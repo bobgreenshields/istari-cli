@@ -17,7 +17,7 @@ layout: rule
 title: "<%= rule.title %>"
 summary: "<%= rule.summary %>"
 <% if  rule.title_link? %>
-title-link: "<%= rule.title_link %>"
+title_link: "<%= rule.title_link %>"
 <% end %>
 ---
 
