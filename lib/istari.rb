@@ -28,7 +28,7 @@ module Istari
 	register(:search_root) { Pathname.pwd }
 	register(:table_width) { 120 }
 	register(:backup_dir_name) { ".backups" }
-	register(:backup) { BackupTime.new(self[:backup_dir_name]) }
+	register(:backup) { BackupTime.new(self.backup_dir) }
 	register(:writer) { FileWriter.new(self[:backup]) }
 
 	register(:mobs_loader) { MobsYamlLoader.new(self.mobs_file) }
