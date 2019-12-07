@@ -15,7 +15,7 @@ module Istari
 			unless @file_path.exist?
 				raise	RosterYamlLoaderError, "Trying to load a roster but #{@file_path} does not exist"
 			end
-			Roster.from_array(YAML.load(@file_path.read))
+			Roster.from_array(YAML.load(@file_path.read) || [])
 		end
 	end
 	
