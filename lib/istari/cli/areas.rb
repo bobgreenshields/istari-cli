@@ -25,6 +25,10 @@ module Istari
 				areas.push(area)
 				# list
 				Istari.areas_save(areas)
+				yn = ask("Add an item of interest to this area? [y/N]").strip.downcase
+				if yn == "y"
+					add_items(area.number)
+				end
 				yn = ask("Add a mob to this area? [y/N]").strip.downcase
 				if yn == "y"
 					add_mob(area.number)
@@ -44,6 +48,11 @@ module Istari
 
 			def refresh_areas
 				@areas = Istari.areas_get
+			end
+
+			def add_items(area_number)
+				items_cli = Istari::Cli::Items.new
+				items_cli.add(area_number)
 			end
 
 			def add_mob(area_number)

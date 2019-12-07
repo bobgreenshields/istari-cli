@@ -35,7 +35,7 @@ module Istari
 			private
 
 			def check_area(area_number)
-				if ! /\d+/.match(area_number)
+				if ! area_number.kind_of?(Integer) && ! /\d+/.match(area_number)
 					say "#{area_number} is not a number, please use digits for the area number", :red
 					exit
 				end
