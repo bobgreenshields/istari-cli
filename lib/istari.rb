@@ -110,7 +110,7 @@ module Istari
 
 		def mobs_file
 			# istari_root + "_data" + "mobs.yml"
-			mobs_dir + "mobs.yml"
+			dir(:data) + "mobs.yml"
 		end
 
 		def mobs_dir
