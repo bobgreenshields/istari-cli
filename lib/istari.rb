@@ -104,6 +104,10 @@ module Istari
 			DIR_STRUCTURE.keys
 		end
 
+		def templates_dir
+			Pathname.new(__dir__) +  ".." + "templates"
+		end
+
 		def mobs_file
 			# istari_root + "_data" + "mobs.yml"
 			mobs_dir + "mobs.yml"

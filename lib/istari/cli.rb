@@ -37,7 +37,7 @@ module Istari
 			private
 
 			def init_dirs
-				say "+++ Checking all directories are present +++"
+				say "\n+++ Checking all directories are present +++"
 				Istari.dirs.each do |dir_name|
 					dir = Istari.dir(dir_name)
 					if dir.exist?
@@ -51,12 +51,13 @@ module Istari
 
 			def backup_existing_files
 				backup = Istari[:backup]
-				say "+++ Backing up and clearing out exisitng files+++"
+				say "\n+++ Backing up and clearing out exisitng files +++"
 				Istari.dirs.each do |dir_name|
 					dir = Istari.dir(dir_name)
 					next unless dir.exist?
 					say "+ Checking #{dir_name} directory +"
-					dir.children do |child|
+					puts dir.to_s
+					dir.each_child do |child|
 						next unless child.file?
 						say "Backing up #{child.basename.to_s}"
 						backup.call(child)
@@ -65,13 +66,31 @@ module Istari
 			end
 
 			def load_default_files
+				files_hash = {data: %w(default_roster.yml mobs.yml party.yml),
+					rosters: %w(01-default.md) }
+
+				say "\n+++ Copying over the necessary default files +++"
+				files_hash.each do |dir_name, file_array|
+					file_array.each do |file|
+						target = Istari.dir(dir_name) + file
+						say "+ Checking #{file} +"
+						if target.exist?
+							say "#{target.to_s} already exists so will not copy"
+						else
+							say "Copying #{file} to #{dir_name.to_s} directory"
+							FileUtils.cp(Istari.templates_dir + file, Istari.dir(dir_name))
+						end
+					end
+				end
 			end
 
 			def copy_over_rules
+				say "\n+++ Copying over personal rules files +++"
 				template_dir = Pathname.new(Istari.rc.fetch("rules_dir") { return })
 				return unless template_dir.directory?
 				template_dir.each_child do |child|
 					next unless child.extname == '.md'
+					say "Copying over #{child}"
 					target = Istari.rules_dir + child.basename
 					FileUtils.cp(child, target) unless target.exist?
 				end
