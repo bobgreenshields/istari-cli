@@ -5,8 +5,8 @@ module Istari
 	class RosterYaml
 		attr_reader :roster
 
-		def initialize(roster_file:, writer:)
-			@roster_file = roster_file
+		def initialize(roster_data_file:, writer:)
+			@roster_data_file = roster_data_file
 			@writer = writer
 		end
 
@@ -30,7 +30,7 @@ TEMPLATE
 		def call(roster)
 			@roster = roster
 			renderer = ERB.new(template, 0, '>')
-			@writer.call(file: @roster_file, content: renderer.result(get_binding))
+			@writer.call(file: @roster_data_file, content: renderer.result(get_binding))
 		end
 		
 	end

@@ -23,6 +23,9 @@ require 'pathname'
 require 'dry/container'
 
 module Istari
+	class IstariError < StandardError
+	end
+
 	extend Dry::Container::Mixin
 
 	register(:search_root) { Pathname.pwd }
@@ -48,10 +51,25 @@ module Istari
 	register(:rules_table) { RulesTable.new(self[:table_width]) }
 	register(:rules_saver) { RuleYaml }
 
-	register(:roster_loader) { RosterYamlLoader.new(self.roster_file) }
+	register(:roster_loader) { RosterYamlLoader.new(self.roster_data_file) }
 	register(:roster_table) { RosterTable.new(self[:table_width]) }
 	register(:roster_saver) { RosterYaml }
 	register(:roster_sorted_table) { RosterSortedTable.new(self[:table_width]) }
+
+	register(:roster_data_file) { "default_roster.yml" }
+
+	DIR_STRUCTURE = {
+		areas: %w(_areas),
+		assets: %w(assets),
+		area_maps: %w(assets area_maps),
+		char_sheets: %w(assets char_sheets),
+		player_images: %w(assets player_images),
+		data: %w(_data),
+		area_items: %w(_data area_items),
+		mobs: %w(_mobs),
+		rosters: %w(_rosters),
+		rules: %w(_rules)
+	}
 
 	class << self
 		def istari_root
@@ -69,16 +87,38 @@ module Istari
 			curr_dir
 		end
 
+		def dir(name)
+			unless @dirs_hash
+				@dirs_hash = Hash.new do |hash, key|
+					unless DIR_STRUCTURE.key?(key)
+						raise IstariError,
+							"Looking for dir #{key.to_s} but it's not part of the dir structure"
+					end
+					hash[key] = DIR_STRUCTURE[key].inject(istari_root) do |root, sub_dir|
+						root + sub_dir
+					end
+				end
+			end
+			@dirs_hash[name]
+		end
+
+		def dirs
+			DIR_STRUCTURE.keys
+		end
+
 		def mobs_file
-			istari_root + "_data" + "mobs.yml"
+			# istari_root + "_data" + "mobs.yml"
+			mobs_dir + "mobs.yml"
 		end
 
 		def mobs_dir
-			istari_root + "_mobs"
+			# istari_root + "_mobs"
+			dir(:mobs)
 		end
 
 		def rules_dir
-			istari_root + "_rules"
+			# istari_root + "_rules"
+			dir(:rules)
 		end
 
 		def rc
@@ -87,15 +127,19 @@ module Istari
 		end
 
 		def areas_dir
-			istari_root + "_areas"
+			dir(:areas)
+			# istari_root + "_areas"
 		end
 
 		def area_items_dir
-			istari_root + "_data" + "area_items"
+			dir(:area_items)
+			# istari_root + "_data" + "area_items"
 		end
 
-		def roster_file
-			istari_root + "_data" + "01-default.yml"
+		def roster_data_file
+			roster_hash = YAML.load(dir(:rosters).children.first.read)
+			roster_data_file_name = roster_hash["data_file"] + ".yml"
+			dir(:data) + roster_data_file_name
 		end
 
 		def mobs_get
@@ -156,7 +200,7 @@ module Istari
 		end
 
 		def roster_save(roster)
-			saver = self[:roster_saver].new(roster_file: roster_file, writer: self[:writer])
+			saver = self[:roster_saver].new(roster_data_file: roster_data_file, writer: self[:writer])
 			roster.save(saver)
 		end
 
