@@ -56,8 +56,6 @@ module Istari
 	register(:roster_saver) { RosterYaml }
 	register(:roster_sorted_table) { RosterSortedTable.new(self[:table_width]) }
 
-	register(:roster_data_file) { "default_roster.yml" }
-
 	DIR_STRUCTURE = {
 		areas: %w(_areas),
 		assets: %w(assets),
