@@ -50,6 +50,18 @@ module Istari
 			end
 
 			def backup_existing_files
+				backup = Istari[:backup]
+				say "+++ Backing up and clearing out exisitng files+++"
+				Istari.dirs.each do |dir_name|
+					dir = Istari.dir(dir_name)
+					next unless dir.exist?
+					say "+ Checking #{dir_name} directory +"
+					dir.children do |child|
+						next unless child.file?
+						say "Backing up #{child.basename.to_s}"
+						backup.call(child)
+					end
+				end
 			end
 
 			def load_default_files
