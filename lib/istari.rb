@@ -93,7 +93,8 @@ module Istari
 							"Looking for dir #{key.to_s} but it's not part of the dir structure"
 					end
 					hash[key] = DIR_STRUCTURE[key].inject(istari_root) do |root, sub_dir|
-						root + sub_dir
+						(root + sub_dir).
+							tap {|dir_path| dir_path.mkdir unless dir_path.exist?}
 					end
 				end
 			end
